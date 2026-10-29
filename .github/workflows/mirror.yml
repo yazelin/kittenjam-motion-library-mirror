@@ -1,0 +1,21 @@
+name: mirror
+on:
+  schedule: [{cron: '17 19 * * *'}] # 每日台灣時間 03:17
+  workflow_dispatch:
+permissions: {contents: read, pages: write, id-token: write}
+concurrency: {group: pages, cancel-in-progress: true}
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    environment: {name: github-pages, url: '${{ steps.deploy.outputs.page_url }}'}
+    steps:
+      - name: Fetch site
+        run: |
+          # ponytail: 站是純靜態檔，wget -p 抓 HTML 引用的檔；JS 動態載入的新檔要補在後面清單
+          wget -q -p -nH -P site -e robots=off https://kittenjam-motion-library.vercel.app/ https://kittenjam-motion-library.vercel.app/og.png || true
+          test -s site/index.html && test -s site/app.js && test -s site/data.js
+          ls -la site
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: site}
+      - id: deploy
+        uses: actions/deploy-pages@v4
