@@ -9,11 +9,23 @@ jobs:
     runs-on: ubuntu-latest
     environment: {name: github-pages, url: '${{ steps.deploy.outputs.page_url }}'}
     steps:
+      - uses: actions/checkout@v4
       - name: Fetch site
         run: |
           # ponytail: 站是純靜態檔，wget -p 抓 HTML 引用的檔；JS 動態載入的新檔要補在後面清單
           wget -q -p -nH -P site -e robots=off https://kittenjam-motion-library.vercel.app/ https://kittenjam-motion-library.vercel.app/og.png || true
           test -s site/index.html && test -s site/app.js && test -s site/data.js
+          python3 - <<'PY'
+          import json
+          s = open('site/data.js', encoding='utf-8').read()
+          i = s.index('const ITEMS=') + len('const ITEMS=')
+          items = json.loads(s[i:s.index('];', i) + 1])
+          tail = '\n配色：請依照網站既有的主題色與風格自行搭配，不要另外指定顏色。'
+          for it in items:
+              it['copy_prompt'] = f"「{it['zh']}（{it['en']}）」動態效果：{it['prompt']}{tail}"
+          json.dump(items, open('site/effects.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
+          PY
+          cp llms.txt site/
           ls -la site
       - uses: actions/upload-pages-artifact@v3
         with: {path: site}

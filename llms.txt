@@ -1,0 +1,9 @@
+# Motion Library 動態收藏（每日快取）
+
+> 327 種網頁動態效果：文字、按鈕、表單、卡片、媒體、圖形、背景、版面、游標。每種有繁中 AI 提示詞與可運作的 CSS/GSAP/Canvas 原始碼。原站 https://kittenjam-motion-library.vercel.app/
+
+- [effects.json](https://yazelin.github.io/kittenjam-motion-library-mirror/effects.json)：全部效果的資料，含 prompt 與 copy_prompt（原站「複製提示詞」的完整內容）
+- [fx.js](https://yazelin.github.io/kittenjam-motion-library-mirror/fx.js)：各效果的 JS 實作，FX[id]
+- [fx.css](https://yazelin.github.io/kittenjam-motion-library-mirror/fx.css)：各效果的 CSS
+- [使用說明 SKILL.md](https://raw.githubusercontent.com/yazelin/kittenjam-motion-library-mirror/main/skills/motion-library/SKILL.md)：怎麼搜尋、取出提示詞與原始碼、搬進專案
+- [查詢腳本 motion.py](https://raw.githubusercontent.com/yazelin/kittenjam-motion-library-mirror/main/skills/motion-library/motion.py)：只用 Python 標準函式庫
